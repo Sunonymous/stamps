@@ -1,0 +1,362 @@
+; This is the Calva REPL Window.
+; It's just a file, really, with some special treatment from Calva.
+; Use it as a REPL input prompt if you like. (When the REPL is connected.)
+; TIPS: The keyboard shortcut `ctrl+alt+o r` shows and focuses this window
+; Please see https://calva.io/repl-window/ for more info.
+; Happy coding! ♥️
+
+; TIPS: As with any Clojure file when the REPL is connected:
+; - `alt+enter` evaluates the current top level form.
+; - `ctrl+enter` evaluates the current form.
+; Special for this file:
+; - `alt+up` and `alt+down` traverse up and down the REPL command history
+;    when the cursor is after the last contents at the prompt
+;
+; See also the Calva Inspector: https://calva.io/inspector/
+
+PLEASE NOTE
+We will update the default location of this file.
+The new default location will be
+  "<projectRootPath>/.calva/repl.calva-repl"
+For now the legacy path is used by default.
+To give yourself a smooth transition, you can opt in
+to the change, by configuring this setting as false:
+  "calva.useLegacyReplWindowPath"
+and then add "**/.calva/repl.calva-repl" to your ".gitignore" file.
+
+
+This file is configured as the output destination for all REPL output.
+You can configure this with the setting:
+  "calva.outputDestinations"
+
+
+; Jacking in...
+; Connecting using "shadow-cljs" project type.
+; You can make Calva auto-select this.
+;   - See https://calva.io/connect-sequences/
+;
+
+; Starting Jack-in: (cd /home/sunny/projects/stamps; npx shadow-cljs -d cider/cider-nrepl:0.55.4 watch :app)
+; Using host:port localhost:8777 ...
+; Hooking up nREPL sessions ...
+; Connected session: clj
+; Evaluating code from settings: 'calva.autoEvaluateCode.onConnect.clj'
+nil
+clj꞉shadow.user꞉> 
+; Creating cljs repl session...
+; Connecting cljs repl: shadow-cljs...
+; Connected session: cljs, repl: :app
+; TIPS: You can choose which REPL to use (clj or cljs):
+;    *Calva: Toggle REPL connection*
+;    (There is a button in the status bar for this)
+; Evaluating code from settings: 'calva.autoEvaluateCode.onConnect.cljs'
+nil
+"Please see https://calva.io/output/#about-stdout-in-the-repl-window
+about why stdout printed to this file is prepended with `;` to be line comments."
+clj꞉user꞉> 
+; Jack-in done.
+clj꞉user꞉> 
+; [:app] Compiling ...
+; [:app] Build completed. (480 files, 2 compiled, 0 warnings, 0.20s)
+; [:app] Compiling ...
+; [:app] Build completed. (480 files, 3 compiled, 0 warnings, 0.29s)
+; [:app] Compiling ...
+; [:app] Build completed. (480 files, 3 compiled, 0 warnings, 0.23s)
+; [:app] Compiling ...
+; [:app] Build completed. (480 files, 2 compiled, 0 warnings, 0.19s)
+; [:app] Compiling ...
+; [:app] Build completed. (480 files, 3 compiled, 0 warnings, 0.23s)
+; [:app] Compiling ...
+; [:app] Build completed. (480 files, 2 compiled, 0 warnings, 0.19s)
+; [:app] Compiling ...
+; [:app] Build completed. (480 files, 2 compiled, 0 warnings, 0.16s)
+; [:app] Compiling ...
+; [:app] Build completed. (480 files, 3 compiled, 0 warnings, 0.23s)
+; [:app] Compiling ...
+; [:app] Build completed. (480 files, 3 compiled, 1 warnings, 0.21s)
+;
+; ------ WARNING #1 - :undeclared-var --------------------------------------------
+;  File: /home/sunny/projects/stamps/src/stamps/events.cljs:65:32
+; --------------------------------------------------------------------------------
+;   62 |  [->localStorage]
+;   63 |  (fn-traced [db [_ id]]
+;   64 |    (update-in db [:logs/by-id id :timestamps]
+;   65 |    (cons (.getTime (js/Date.)) %))))
+; --------------------------------------^-----------------------------------------
+;  Use of undeclared Var stamps.events/%
+; --------------------------------------------------------------------------------
+;   66 |
+;   67 | (re-frame/reg-event-db
+;   68 |  ::delete-log
+;   69 |  (fn-traced [db [_ id]]
+; --------------------------------------------------------------------------------
+; [:app] Compiling ...
+; [:app] Build completed. (480 files, 3 compiled, 1 warnings, 0.23s)
+;
+; ------ WARNING #1 - :undeclared-var --------------------------------------------
+;  File: /home/sunny/projects/stamps/src/stamps/events.cljs:65:32
+; --------------------------------------------------------------------------------
+;   62 |  [->localStorage]
+;   63 |  (fn-traced [db [_ id]]
+;   64 |             (update-in db [:logs/by-id id :timestamps]
+;   65 |    (cons (.getTime (js/Date.)) %))))
+; --------------------------------------^-----------------------------------------
+;  Use of undeclared Var stamps.events/%
+; --------------------------------------------------------------------------------
+;   66 |
+;   67 | (re-frame/reg-event-db
+;   68 |  ::delete-log
+;   69 |  (fn-traced [db [_ id]]
+; --------------------------------------------------------------------------------
+; [:app] Compiling ...
+; [:app] Build completed. (480 files, 3 compiled, 0 warnings, 0.21s)
+; [:app] Compiling ...
+; [:app] Build completed. (480 files, 2 compiled, 0 warnings, 0.18s)
+; [:app] Compiling ...
+; [:app] Build completed. (480 files, 2 compiled, 0 warnings, 0.19s)
+; [:app] Compiling ...
+; [:app] Build completed. (480 files, 2 compiled, 0 warnings, 0.18s)
+; [:app] Compiling ...
+; [:app] Build completed. (480 files, 2 compiled, 0 warnings, 0.15s)
+; [:app] Compiling ...
+; [:app] Build completed. (480 files, 2 compiled, 0 warnings, 0.18s)
+; [:app] Compiling ...
+; [:app] Build completed. (480 files, 2 compiled, 0 warnings, 0.16s)
+; [:app] Compiling ...
+; [:app] Build completed. (480 files, 2 compiled, 0 warnings, 0.17s)
+; [:app] Compiling ...
+; [:app] Build completed. (480 files, 3 compiled, 0 warnings, 0.23s)
+; [:app] Compiling ...
+; [:app] Build completed. (480 files, 3 compiled, 0 warnings, 0.21s)
+; [:app] Compiling ...
+; [:app] Build completed. (480 files, 3 compiled, 0 warnings, 0.21s)
+; [:app] Compiling ...
+; [:app] Build completed. (480 files, 2 compiled, 0 warnings, 0.19s)
+; [:app] Compiling ...
+; [:app] Build completed. (480 files, 2 compiled, 0 warnings, 0.18s)
+; [:app] Compiling ...
+; [:app] Build completed. (480 files, 2 compiled, 0 warnings, 0.17s)
+; [:app] Compiling ...
+; [:app] Build completed. (480 files, 2 compiled, 0 warnings, 0.16s)
+; [:app] Compiling ...
+; [:app] Build completed. (480 files, 2 compiled, 0 warnings, 0.17s)
+; [:app] Compiling ...
+; [:app] Build completed. (480 files, 2 compiled, 0 warnings, 0.17s)
+; [:app] Compiling ...
+; [:app] Build completed. (480 files, 2 compiled, 0 warnings, 0.16s)
+; [:app] Compiling ...
+; [:app] Build completed. (480 files, 2 compiled, 0 warnings, 0.16s)
+; [:app] Compiling ...
+; [:app] Build completed. (480 files, 2 compiled, 0 warnings, 0.18s)
+; [:app] Compiling ...
+; [:app] Build completed. (480 files, 2 compiled, 0 warnings, 0.16s)
+; [:app] Compiling ...
+; [:app] Build completed. (480 files, 3 compiled, 0 warnings, 0.20s)
+; [:app] Compiling ...
+; [:app] Build completed. (480 files, 3 compiled, 0 warnings, 0.24s)
+; [:app] Compiling ...
+; [:app] Build completed. (480 files, 2 compiled, 0 warnings, 0.18s)
+; [:app] Compiling ...
+; [:app] Build completed. (480 files, 2 compiled, 0 warnings, 0.17s)
+; [:app] Compiling ...
+; [:app] Build completed. (480 files, 3 compiled, 0 warnings, 0.20s)
+; [:app] Compiling ...
+; [:app] Build completed. (480 files, 2 compiled, 1 warnings, 0.17s)
+;
+; ------ WARNING #1 - :undeclared-var --------------------------------------------
+;  File: /home/sunny/projects/stamps/src/stamps/subs.cljs:64:19
+; --------------------------------------------------------------------------------
+;   61 |
+;   62 | (re-frame/reg-sub
+;   63 |  ::sort-parameter
+;   64 |  (:sort-parameter db))
+; -------------------------^------------------------------------------------------
+;  Use of undeclared Var stamps.subs/db
+; --------------------------------------------------------------------------------
+nil
+;
+; ------ WARNING - :undeclared-var -----------------------------------------------
+;  Resource: <eval>:1:1
+;  Use of undeclared Var stamps.subs/db
+; --------------------------------------------------------------------------------
+;
+cljs꞉stamps.subs꞉> 
+; [:app] Compiling ...
+; [:app] Build completed. (480 files, 2 compiled, 1 warnings, 0.18s)
+;
+; ------ WARNING #1 - :undeclared-var --------------------------------------------
+;  File: /home/sunny/projects/stamps/src/stamps/subs.cljs:64:19
+; --------------------------------------------------------------------------------
+;   61 |
+;   62 | (re-frame/reg-sub
+;   63 |  ::sort-parameter
+;   64 |  (:sort-parameter db))
+; -------------------------^------------------------------------------------------
+;  Use of undeclared Var stamps.subs/db
+; --------------------------------------------------------------------------------
+; [:app] Compiling ...
+; [:app] Build completed. (480 files, 2 compiled, 1 warnings, 0.16s)
+;
+; ------ WARNING #1 - :undeclared-var --------------------------------------------
+;  File: /home/sunny/projects/stamps/src/stamps/subs.cljs:64:19
+; --------------------------------------------------------------------------------
+;   61 |
+;   62 | (re-frame/reg-sub
+;   63 |  ::sort-parameter
+;   64 |  (:sort-parameter db))
+; -------------------------^------------------------------------------------------
+;  Use of undeclared Var stamps.subs/db
+; --------------------------------------------------------------------------------
+; [:app] Compiling ...
+; [:app] Build completed. (480 files, 2 compiled, 0 warnings, 0.18s)
+; [:app] Compiling ...
+; [:app] Build completed. (480 files, 2 compiled, 0 warnings, 0.16s)
+; [:app] Compiling ...
+; [:app] Build completed. (480 files, 2 compiled, 0 warnings, 0.17s)
+; [:app] Compiling ...
+; [:app] Build completed. (480 files, 3 compiled, 0 warnings, 0.22s)
+; [:app] Compiling ...
+; [:app] Build completed. (480 files, 2 compiled, 0 warnings, 0.16s)
+; [:app] Compiling ...
+; [:app] Build completed. (480 files, 2 compiled, 0 warnings, 0.15s)
+; [:app] Compiling ...
+; [:app] Build completed. (480 files, 2 compiled, 0 warnings, 0.17s)
+; [:app] Compiling ...
+; [:app] Build completed. (480 files, 2 compiled, 0 warnings, 0.17s)
+; [:app] Compiling ...
+; [:app] Build completed. (480 files, 2 compiled, 0 warnings, 0.18s)
+; [:app] Compiling ...
+; [:app] Build completed. (480 files, 2 compiled, 0 warnings, 0.18s)
+; [:app] Compiling ...
+; [:app] Build failure:
+; ------ ERROR -------------------------------------------------------------------
+;  File: /home/sunny/projects/stamps/src/stamps/views.cljs:171:3
+; --------------------------------------------------------------------------------
+;  168 |
+;  169 | (defn ledger-viewer
+;  170 |   []
+;  171 |   (let [log-ids @(rf/subscribe [(active-ledger->rf-sub @(rf/subscribe [::subs/active-ledger]))])
+; ---------^----------------------------------------------------------------------
+; Syntax error macroexpanding cljs.core/let.
+; Call to cljs.core/let did not conform to spec.
+; -- Spec failed --------------------
+;
+;   ([log-ids
+;     @(rf/subscribe
+;       [(active-ledger->rf-sub
+;         @(rf/subscribe [:stamps.subs/active-ledger]))])
+;     sorted-ids
+;     (sort-by @(rf/subscribe [:stamps.subs/sort-parameter]) log-ids)
+;     ordered-ids
+;     (if
+;      @(rf/subscribe [:stamps.subs/reverse-sort])
+;      (reverse sorted-ids)
+;      sorted-ids)
+;     _] ...)
+;    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+;
+; should satisfy
+;
+;   even-number-of-forms?
+;
+; -- Relevant specs -------
+;
+; :shadow.cljs.devtools.cljs-specs/bindings:
+;   (clojure.spec.alpha/and
+;    clojure.core/vector?
+;    shadow.cljs.devtools.cljs-specs/even-number-of-forms?
+;    (clojure.spec.alpha/* :shadow.cljs.devtools.cljs-specs/binding))
+;
+; -------------------------
+; Detected 1 error
+;
+; --------------------------------------------------------------------------------
+;  172 |         sorted-ids (sort-by @(rf/subscribe [::subs/sort-parameter]) log-ids)
+;  173 |         ordered-ids (if @(rf/subscribe [::subs/reverse-sort])
+;  174 |                       (reverse sorted-ids)
+;  175 |                       sorted-ids)
+; --------------------------------------------------------------------------------
+;
+; [:app] Compiling ...
+; [:app] Build completed. (480 files, 1 compiled, 0 warnings, 0.17s)
+; [:app] Compiling ...
+; [:app] Build completed. (480 files, 2 compiled, 0 warnings, 0.19s)
+; [:app] Compiling ...
+; [:app] Build completed. (480 files, 2 compiled, 0 warnings, 0.19s)
+; [:app] Compiling ...
+; [:app] Build completed. (480 files, 2 compiled, 0 warnings, 0.18s)
+; [:app] Compiling ...
+; [:app] Build completed. (480 files, 2 compiled, 0 warnings, 0.17s)
+; [:app] Compiling ...
+; [:app] Build completed. (480 files, 2 compiled, 0 warnings, 0.16s)
+; nREPL Connection was closed
+; Jacking in...
+; Connecting using "shadow-cljs" project type.
+; You can make Calva auto-select this.
+;   - See https://calva.io/connect-sequences/
+;
+
+; Starting Jack-in: (cd /home/sunny/projects/stamps; npx shadow-cljs -d cider/cider-nrepl:0.55.4 watch :app)
+; Using host:port localhost:8777 ...
+; Hooking up nREPL sessions ...
+; Connected session: clj
+; Evaluating code from settings: 'calva.autoEvaluateCode.onConnect.clj'
+nil
+clj꞉shadow.user꞉> 
+; Creating cljs repl session...
+; Connecting cljs repl: shadow-cljs...
+; Connected session: cljs, repl: :app
+; TIPS: You can choose which REPL to use (clj or cljs):
+;    *Calva: Toggle REPL connection*
+;    (There is a button in the status bar for this)
+; Evaluating code from settings: 'calva.autoEvaluateCode.onConnect.cljs'
+nil
+clj꞉user꞉> 
+; Jack-in done.
+clj꞉user꞉> 
+; [:app] Compiling ...
+; [:app] Build completed. (480 files, 2 compiled, 0 warnings, 0.33s)
+; [:app] Compiling ...
+; [:app] Build completed. (480 files, 2 compiled, 0 warnings, 0.23s)
+; [:app] Compiling ...
+; [:app] Build completed. (480 files, 2 compiled, 0 warnings, 0.20s)
+; [:app] Compiling ...
+; [:app] Build completed. (480 files, 3 compiled, 0 warnings, 0.30s)
+; [:app] Compiling ...
+; [:app] Build completed. (480 files, 2 compiled, 0 warnings, 0.24s)
+; [:app] Compiling ...
+; [:app] Build completed. (480 files, 2 compiled, 0 warnings, 0.19s)
+; [:app] Compiling ...
+; [:app] Build completed. (480 files, 2 compiled, 0 warnings, 0.20s)
+; [:app] Compiling ...
+; [:app] Build completed. (480 files, 2 compiled, 0 warnings, 0.19s)
+; [:app] Compiling ...
+; [:app] Build completed. (480 files, 2 compiled, 0 warnings, 0.17s)
+; [:app] Compiling ...
+; [:app] Build completed. (480 files, 2 compiled, 0 warnings, 0.19s)
+; [:app] Compiling ...
+; [:app] Build completed. (480 files, 2 compiled, 0 warnings, 0.18s)
+; [:app] Compiling ...
+; [:app] Build completed. (480 files, 2 compiled, 0 warnings, 0.21s)
+; [:app] Compiling ...
+; [:app] Build completed. (480 files, 2 compiled, 0 warnings, 0.18s)
+; [:app] Compiling ...
+; [:app] Build completed. (480 files, 2 compiled, 0 warnings, 0.24s)
+; [:app] Compiling ...
+; [:app] Build completed. (480 files, 2 compiled, 0 warnings, 0.18s)
+; [:app] Compiling ...
+; [:app] Build completed. (480 files, 2 compiled, 0 warnings, 0.17s)
+; [:app] Compiling ...
+; [:app] Build completed. (480 files, 2 compiled, 0 warnings, 0.18s)
+; [:app] Compiling ...
+; [:app] Build completed. (480 files, 2 compiled, 0 warnings, 0.18s)
+; [:app] Compiling ...
+; [:app] Build completed. (480 files, 2 compiled, 0 warnings, 0.16s)
+; [:app] Compiling ...
+; [:app] Build completed. (480 files, 2 compiled, 0 warnings, 0.18s)
+; [:app] Compiling ...
+; [:app] Build completed. (480 files, 2 compiled, 0 warnings, 0.18s)
+; [:app] Compiling ...
+; [:app] Build completed. (480 files, 2 compiled, 0 warnings, 0.18s)
+; [:app] Compiling ...
+; [:app] Build completed. (480 files, 2 compiled, 0 warnings, 0.17s)

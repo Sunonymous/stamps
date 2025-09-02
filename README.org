@@ -1,0 +1,60 @@
+#+title: Stamps
+#+startup: overview
+
+So we want like a semantic tour of the program, to ensure that all functionality has been completed in some way.
+Also, check todos in VS Code.
+
+* Functionality
+** Logs
+*** DONE Make a Log
+*** DONE Delete a Log
+*** DONE Rename a Log
+*** DONE Set a due date for a log as a calendar date
+*** DONE Set a due date for a log as a weekday
+*** DONE Set a goal for a log
+*** DONE View all Logs Sequentially
+*** TODO View all Logs Sorted by
+**** TODO Name
+**** TODO Creation Time (ids)
+**** TODO Number of Stamps
+**** TODO Most Recently Stamped
+*** TODO Sort Can Be Reversed
+*** TODO View all Logs Sorted by Dynamic Views
+General view should exclude logs scheduled for deletion.
+**** TODO Needs Attention
+This view combines any logs which have a due date which has not arrived (soonest first), then any log with a goal set which is yet to have been met.
+**** TODO Completed
+This view shows logs within a certain victory time threshold which have either a due date or a goal and have been completed.
+***** TODO (should completed have different vanishing threshold?)
+**** TODO Archived
+This view is where old or ignored logs "go". Any log which has either no stamps or its most recent stamp occurred beyond the archiving threshold.
+**** TODO Scheduled for Deletion
+***** TODO (deleting log without timestamps is immediate)
+***** TODO (deleting log with timestamps adds id to queue with ms current time)
+***** TODO (upon program start, checks and deletes logs after the config value)
+**** TODO (views are always available and appear only when they have content)
+**** TODO Overdue
+This view shows when a log has a deadline which has already passed, and the log has no stamps.
+*** TODO View information about an individual Log
+**** DONE Name
+**** DONE Due Date
+**** TODO Goal Status
+**** DONE Number of Stamps
+**** DONE Individual Stamps
+*** TODO Edit information about an individual Log
+**** DONE Name
+**** TODO Due Date
+**** TODO Goal
+*** DONE Add local storage
+*** TODO Write Data Spec and Enforce it
+*** TODO Fix localStorage Cofx warning
+* Glossary
+** Log
+A log is something the user wants to track interaction with. It is a collection of timestamps. It may contain a due date, either once or weekly, or a goal of a certain number of stamps within a given time period. This program is ultimately a log sorter, and is designed to present the user with what they want to keep in the forefront of their own minds.
+** Stamp
+A stamp is the symbolic representation of a timestamp upon a log. In the data, it is the number of milliseconds since the epoch.
+** Ledger
+A ledger is a collection of logs. Many ledgers are "virtual" in the sense that they are derived and dynamic based on the user's data. The user may also create a ledger to organize logs, if they choose.
+* Long-Term Goals
+** Multiple Stamp Types
+Stamps with individual IDs, names, appearances, etc.

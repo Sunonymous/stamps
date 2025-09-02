@@ -1,0 +1,39 @@
+name: Build and Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]  # or your default branch
+  workflow_dispatch:  # allows manual trigger from the GitHub UI
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install npm dependencies
+        run: npm install
+
+      - name: Build with shadow-cljs
+        run: npx shadow-cljs release app
+
+      - name: Copy static site files
+        run: |
+          mkdir -p release
+          cp resources/public/index.html release/
+          cp -r resources/public/css release/ || true
+          cp -r resources/public/img release/ || true
+          cp public/js/main.js release/
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./release
