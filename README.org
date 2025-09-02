@@ -14,11 +14,11 @@ Also, check todos in VS Code.
 *** DONE Set a goal for a log
 *** DONE View all Logs Sequentially
 *** TODO View all Logs Sorted by
-**** TODO Name
-**** TODO Creation Time (ids)
+**** DONE Name
+**** DONE Creation Time (ids)
 **** TODO Number of Stamps
 **** TODO Most Recently Stamped
-*** TODO Sort Can Be Reversed
+*** DONE Sort Can Be Reversed
 *** TODO View all Logs Sorted by Dynamic Views
 General view should exclude logs scheduled for deletion.
 **** TODO Needs Attention
@@ -35,10 +35,10 @@ This view is where old or ignored logs "go". Any log which has either no stamps 
 **** TODO (views are always available and appear only when they have content)
 **** TODO Overdue
 This view shows when a log has a deadline which has already passed, and the log has no stamps.
-*** TODO View information about an individual Log
+*** DONE View information about an individual Log
 **** DONE Name
 **** DONE Due Date
-**** TODO Goal Status
+**** DONE Goal Status
 **** DONE Number of Stamps
 **** DONE Individual Stamps
 *** TODO Edit information about an individual Log
