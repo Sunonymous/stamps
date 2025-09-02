@@ -15,3 +15,5 @@
 /.shadow-cljs/
 
 .clj-kondo/*
+/release/
+.calva/
