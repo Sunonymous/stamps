@@ -13,15 +13,15 @@ Also, check todos in VS Code.
 *** DONE Set a due date for a log as a weekday
 *** DONE Set a goal for a log
 *** DONE View all Logs Sequentially
-*** TODO View all Logs Sorted by
+*** DONE View all Logs Sorted by
 **** DONE Name
 **** DONE Creation Time (ids)
-**** TODO Number of Stamps
-**** TODO Most Recently Stamped
+**** DONE Number of Stamps
+**** DONE Most Recently Stamped
 *** DONE Sort Can Be Reversed
 *** TODO View all Logs Sorted by Dynamic Views
 General view should exclude logs scheduled for deletion.
-**** TODO Needs Attention
+**** DONE Needs Attention
 This view combines any logs which have a due date which has not arrived (soonest first), then any log with a goal set which is yet to have been met.
 **** TODO Completed
 This view shows logs within a certain victory time threshold which have either a due date or a goal and have been completed.
