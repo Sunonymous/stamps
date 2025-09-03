@@ -1,5 +1,8 @@
 name: Build and Deploy to GitHub Pages
 
+permissions:
+  contents: write
+
 on:
   push:
     branches: [main]  # or your default branch
@@ -31,6 +34,8 @@ jobs:
           cp -r resources/public/styles.css release/
           mkdir -p release/js/compiled/
           cp resources/public/js/compiled/app.js      release/js/compiled/
+
+
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
