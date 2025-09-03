@@ -155,30 +155,31 @@
     :needs-attention ::subs/log-ids-needs-attention
     :done            ::subs/log-ids-done
     :overdue         ::subs/log-ids-overdue
-    :archived        ::subs/log-ids-archived))
+    :archived        ::subs/log-ids-archived
+    :testing         ::subs/log-ids-pred-testing))
 
-(defn- sort-param->predicate-function
+(defn- sort-param->pred-fn
+  "This should probably stay in alignment with the select in the ledger selector."
   [sort-param]
   (case sort-param
-    :id           :id
-    :name         :name
-    :stamp-count #(count (:timestamps %))
-    :most-recent #(apply min (map (fn [n] (- js/Date.now n)) (:timestamps %))) ;; TODO get the minimum of now - timestamp
+    "id"           :id
+    "name"         :name
+    "stamp-count" #(count (:timestamps %))
+    "most-recent" (fn [log]
+                    (if (seq (:timestamps log))
+                      (apply min (map (fn [n] (- (js/Date.now) n)) (:timestamps log)))
+                      ##Inf)) ; using infinity to represent unstamped logs to move them all to the end
+    ;""
   ))
+
 
 (defn ledger-viewer
   []
   (let [log-ids @(rf/subscribe [(active-ledger->rf-sub @(rf/subscribe [::subs/active-ledger]))])
-        ;; TODO so I basically made it so that 'ALL' is the only view, and the sort does work, though to do more complex sorting
-        ;; this subscription below takes a keywork and returns pairs of [log-id value]
-        ;; to do more complex sorting, we'll need to be able to use a predicate function as well
-        ;; that will not work with this interface
-        all-logs-with-parameter @(rf/subscribe [::subs/logs-with-parameter @(rf/subscribe [::subs/sort-parameter])])
-        sorted-ids (sort-by second all-logs-with-parameter)
-        ordered-ids (map first (if @(rf/subscribe [::subs/reverse-sort])
-                                 (reverse sorted-ids)
-                                 sorted-ids))
-        ]
+        sorted-ids (map :id @(rf/subscribe [::subs/sorted-logs-by-id log-ids (sort-param->pred-fn @(rf/subscribe [::subs/sort-parameter]))]))
+        ordered-ids (if @(rf/subscribe [::subs/reverse-sort])
+                      (reverse sorted-ids)
+                      sorted-ids)]
     (when (seq ordered-ids)
       [:div {:style {:margin "1rem 0.75rem"
                      :border "1px solid black"
@@ -210,8 +211,7 @@
           now            (js/Date.now)
           goal-cutoff    (js/Date. (- now goal-window-ms))
           stamps-in-goal-window (count (filter #(>= % goal-cutoff) (:timestamps log)))
-
-          ]
+         ]
       [:div
        {:style {:padding "0.5rem 1rem"
                 :border "1px solid black"}}
@@ -250,7 +250,7 @@
          (and (util/due-today? log) was-stamped-today?)
          [:span {:style {:color :green}} "Completed today!"]
 
-         ; overdue ;; TODO needs better test for overdue
+         ; overdue ;; TODO needs better test for overdue and passed deadlines
          ; might need to overhaul weekly logic
          ;  and how would we consider overdue for weekly logs?
          ;  this alters the completion conditional as well, potentially.
@@ -351,12 +351,17 @@
          :value @(rf/subscribe [::subs/active-ledger])}
         [:option {:value :all} "All"]
         [:option {:value :needs-attention} "Needs Attention"]
-        [:option {:value :archived} "Archived"]]
+        ;; [:option {:value :archived} "Archived"]
+        ;; [:option {:value :testing} "Testing"]
+       ]
        [:select
         {:value @(rf/subscribe [::subs/sort-parameter])
          :on-change (fn [e] (re-frame/dispatch [::events/set-sort-parameter (-> e .-target .-value)]))}
         [:option {:value "id"} "Age"]
-        [:option {:value "name"} "Name"]]
+        [:option {:value "name"} "Name"]
+        [:option {:value "stamp-count"} "Number of Stamps"]
+        [:option {:value "most-recent"} "Most Recently Stamped"]
+       ]
        [:label "Reverse? "
         [:input
          {:type :checkbox

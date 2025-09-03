@@ -120,15 +120,46 @@
             next-remaining (remove (set matches) remaining)]
         (recur next-remaining (rest predicates) (into acc matched-ids))))))
 
+(defn has-stamps? [log]
+  (if (seq (log :timestamps))
+    true false)) ;; not sure if this helps; didn't want nil results in testing
+
 (defn has-goal? [log]
   (contains? log :goal)) ;; TODO test for goal validity? or just assume it?
 
 (defn has-deadline? [log]
   (contains? log :due-on))
 
-(defn has-stamps? [log]
-  (if (seq (log :timestamps))
-    true false)) ;; not sure if this helps; didn't want nil results in testing
+; just a reminder that :due-on, when it is 0-6, represents a day of the week
+; otherwise it is the moment in ms of a particular calendar day
+
+(defn has-calendar-due-date? [log]
+  (and
+   (contains? log :due-on)
+   (< 6 (log :due-on))))
+
+(defn due-weekly? [log]
+  (and
+   (contains? log :due-on)
+   (> 7 (log :due-on))))
+
+(defn has-future-due-date? [log]
+  (and
+   (contains? log :due-on)
+   (< (js/Date.now) (log :due-on))))
+
+(defn has-future-due-date-and-no-stamps? [log]
+  (and
+   (has-future-due-date? log)
+   (not (has-stamps? log))))
+
+(defn has-unmet-goal? [log]
+  (let [[stamps-needed num-time-units time-unit] (str/split (:goal log) #":")
+        goal-window-ms (* num-time-units (timespan->ms time-unit))
+        now            (js/Date.now)
+        goal-cutoff    (js/Date. (- now goal-window-ms))
+        stamps-in-goal-window (count (filter #(>= % goal-cutoff) (:timestamps log)))]
+    (< stamps-in-goal-window stamps-needed)))
 
 (defn should-be-archived? [archive-threshold log]
   (let [now (js/Date.now) ;; TODO this function is yet to work. I think the logic may be confused

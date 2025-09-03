@@ -14,11 +14,21 @@
    (get-in db [:logs/by-id id])))
 
 (re-frame/reg-sub
+ ::logs-by-id
+ (fn [db [_ ids]]
+   (map #(get-in db [:logs/by-id %]) ids)))
+
+(re-frame/reg-sub
+ ::sorted-logs-by-id
+ (fn [db [_ ids sort-fn]]
+   (sort-by sort-fn (map #(get-in db [:logs/by-id %]) ids))))
+
+(re-frame/reg-sub
  ::logs-with-parameter-from-ids
  (fn [db [_ ids key]]
-   (map (fn [id] [id (get-in db [:logs/by-id id key])])
-        ids)
-   ))
+   (map (fn [id]
+          [id (get-in db [:logs/by-id id key])])
+        ids)))
 
 (re-frame/reg-sub
  ::logs-with-parameter
@@ -51,7 +61,19 @@
  ::log-ids-needs-attention
  :<- [::logs-all]
  (fn [logs _]
-   (util/logs->filtered-ids logs [util/due-today?])))
+   (util/logs->filtered-ids logs [util/due-today?
+                                  util/has-future-due-date-and-no-stamps?
+                                  util/has-unmet-goal?
+                                 ])))
+
+(re-frame/reg-sub
+ ::log-ids-pred-testing
+ :<- [::logs-all]
+ (fn [logs _]
+   (util/logs->filtered-ids logs [
+                                  util/has-future-due-date?
+                                 ]))
+ )
 
 (re-frame/reg-sub
  ::log-ids-archived
