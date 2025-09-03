@@ -99,4 +99,4 @@
 (re-frame/reg-event-db
  ::set-sort-parameter
  (fn-traced [db [_ next-sort-param]]
-            (assoc db :sort-parameter (keyword next-sort-param))))
+            (assoc db :sort-parameter next-sort-param)))
