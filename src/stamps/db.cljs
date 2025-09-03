@@ -14,7 +14,7 @@
    :active-ledger :all ;; all/needs-attention ;; TODO add more ledgers!
    :sort-parameter :id
    :reverse-sort   false
-   :ledgers        {:needs-attention    [] ;; has goal/deadline
+   #_:ledgers    #_{:needs-attention    [] ;; has goal/deadline
                     :overdue            [] ;; has deadline
                     :uninterested       [] ;; user has continually passes
                     :recently-created   [] ;; making a new log sends its ID this way
@@ -22,4 +22,4 @@
                     :recently-deleted   [] ;; marking a log for deletion sends its ID here
                     :recently-completed [] ;; added to this list upon completion of a log
                     :archived           [] ;; logs with inaction longer than the archive threshold
-                   }})
+                    }})
