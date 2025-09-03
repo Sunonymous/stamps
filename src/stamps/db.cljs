@@ -12,7 +12,7 @@
                     :delete-after      (util/ms-in-days 7) ;; if logs are in the deleted ledger, they will be removed after 7 days
                     }
    :active-ledger :all ;; all/needs-attention ;; TODO add more ledgers!
-   :sort-parameter :id
+   :sort-parameter "id" ; started using strings for this because they are used as map keys
    :reverse-sort   false
    #_:ledgers    #_{:needs-attention    [] ;; has goal/deadline
                     :overdue            [] ;; has deadline
