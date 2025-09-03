@@ -29,8 +29,8 @@ jobs:
           mkdir -p release
           cp resources/public/index.html    release/
           cp -r resources/public/styles.css release/
-          mkdir -p public/js/compiled/
-          cp public/js/compiled/app.js      release/js/compiled/
+          mkdir -p release/js/compiled/
+          cp resources/public/js/compiled/app.js      release/js/compiled/
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
