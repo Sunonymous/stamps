@@ -65,11 +65,12 @@
 (re-frame/reg-sub
  ::log-ids-needs-attention
  :<- [::logs-all]
- (fn [logs _]
-   (util/logs->filtered-ids logs [util/due-today?
-                                  util/has-future-due-date-and-no-stamps?
-                                  util/has-unmet-goal?
-                                 ])))
+ :<- [::history]
+ (fn [[logs history] _]
+   (util/logs->filtered-ids (filter #(util/base-filter history %) logs)
+                            [util/due-today?
+                             util/has-future-due-date-and-no-stamps?
+                             util/has-unmet-goal?])))
 
 (re-frame/reg-sub
  ::log-ids-pred-testing
@@ -84,12 +85,9 @@
  ::log-ids-archived
  :<- [::logs-all]
  (fn [logs _]
-   (util/logs->filtered-ids logs [(partial util/should-be-archived? (util/ms-in-minutes 5))]))) ;; TODO this should depend on config subscription, not hardcoded values
-
-(re-frame/reg-sub
- ::ordered-ids
- (fn [db]
-   ))
+   (util/logs->filtered-ids logs [
+                                  (partial util/should-be-archived? (util/ms-in-minutes 5))
+                                 ]))) ;; TODO this should depend on config subscription, not hardcoded values
 
 (re-frame/reg-sub
  ::reverse-sort
@@ -105,3 +103,8 @@
  ::advanced-view
  (fn [db]
    (:advanced-view db)))
+
+(re-frame/reg-sub
+ ::history
+ (fn [db]
+   (:history db)))

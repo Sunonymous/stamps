@@ -130,3 +130,13 @@
  ::toggle-advanced-view
  (fn-traced [db _]
             (update db :advanced-view not)))
+
+(re-frame/reg-event-db
+ ::view-log
+ (fn-traced [db [_ id]]
+            (update db :history conj id)))
+
+(re-frame/reg-event-db
+ ::clear-history
+ (fn-traced [db _]
+            (assoc db :history #{})))

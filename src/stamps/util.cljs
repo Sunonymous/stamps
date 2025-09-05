@@ -107,15 +107,6 @@
 
 ;; New topic: ledgers ;;
 
-(defn base-filter
-  "The purpose of the base filter is to remove certain IDs based on conditions that apply
-   to most situations that the user will be using the app for. Logs scheduled for deletion,
-   logs passed for the day, etc."
-  [logs]
-  (-> logs
-      (filter))
-)
-
 (defn logs->filtered-ids
   [logs preds]
   (loop [remaining  logs
@@ -177,6 +168,25 @@
     (and (has-stamps? log)
          ;; first timestamp is older than archive threshold
          (< (first (log :timestamps)) adjusted-time))))
+
+(defn completed? [log]
+  (and
+   (has-deadline? log)
+   (has-stamps? log)
+  ;;  (not (has-unmet-goal? log))
+   )
+  )
+
+(defn base-filter
+  "The purpose of the base filter is to remove certain IDs based on conditions that apply
+   to most situations that the user will be using the app for. Logs scheduled for deletion,
+   logs passed for the day, etc. History is a set of log ids and log is a map."
+  [history log]
+  (and
+   (not (history (:id log))) ; hasn't been interacted with today
+   (not (completed? log))
+  )
+)
 
 (comment
   (let [logs (vals {1 {:id 1, :name "Don't Get Attached..", :timestamps [], :due-on 1752127200000}, 2 {:id 2, :name "Erry Week", :timestamps [1752124089418], :due-on "3"}, 3 {:id 3, :name "2day?", :timestamps [], :due-on "3"}, 4 {:id 4, :name "2morrow?", :timestamps [], :due-on "4"}, 5 {:id 5, :name "test", :timestamps []}, 6 {:id 6, :name "sss", :timestamps [], :due-on 1752559200000}, 7 {:id 7, :name "Trigger", :timestamps []}})]

@@ -359,11 +359,12 @@
                  }}
          [:span {:style {:position :absolute :top :1rem :right :1rem
                          :cursor :pointer :user-select :none
-                         :font-size :2rem :color :red}
+                         :font-size :2rem}
                  :on-click (fn [e]
                              (util/add-class "logViewer" "leaving")
                              (js/setTimeout #(do
                                                (re-frame/dispatch [::events/untarget-log])
+                                               (re-frame/dispatch [::events/view-log log-id])
                                                (util/remove-class "logViewer" "leaving"))
                                             750))}
           "→"] ; close button
@@ -577,7 +578,7 @@
         focused-id (first log-ids)]
     (if focused-id
       [:div#logCyclerWrapper
-       [log-viewer focused-id]]
+       [log-viewer-2 focused-id]]
       [:p "All done!"])))
 
 (defn main []
@@ -589,7 +590,8 @@
                 :display :flex
                 ;; :flex-direction :column
                 :justify-content :center
-                :align-items  :center}}
+                :align-items  :center
+                :position :relative}}
        [:header
         [:h1
          {:style {:font-family "sans-serif" :font-size :1.5rem}}
@@ -600,6 +602,14 @@
          "+ New Log"]]
        (when @(rf/subscribe [::subs/advanced-view])
          [ledger-viewer])
+       (when-not @(rf/subscribe [::subs/advanced-view])
+         (let [history @(rf/subscribe [::subs/history])]
+           (when (seq history)
+             [:button
+              {:style {:position :absolute :top :6rem :right :2rem}
+               :disabled (empty? history)
+               :on-click #(re-frame/dispatch [::events/clear-history])}
+              "Clear History"])))
        (if @(rf/subscribe [::subs/advanced-view])
          [log-viewer-2 @(rf/subscribe [::subs/target-log])]
          [log-cycler])
