@@ -47,7 +47,10 @@ This view shows when a log has a deadline which has already passed, and the log 
 **** TODO Goal
 *** DONE Add local storage
 *** TODO Write Data Spec and Enforce it
-*** TODO Fix localStorage Cofx warning
+*** DONE Fix localStorage Cofx warning
+** System
+*** Statistics Page
+A page to show general user statistics, such as total number of stamps, logs, first and most recent timestamp, etc.
 * Glossary
 ** Log
 A log is something the user wants to track interaction with. It is a collection of timestamps. It may contain a due date, either once or weekly, or a goal of a certain number of stamps within a given time period. This program is ultimately a log sorter, and is designed to present the user with what they want to keep in the forefront of their own minds.

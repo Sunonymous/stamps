@@ -107,6 +107,15 @@
 
 ;; New topic: ledgers ;;
 
+(defn base-filter
+  "The purpose of the base filter is to remove certain IDs based on conditions that apply
+   to most situations that the user will be using the app for. Logs scheduled for deletion,
+   logs passed for the day, etc."
+  [logs]
+  (-> logs
+      (filter))
+)
+
 (defn logs->filtered-ids
   [logs preds]
   (loop [remaining  logs
@@ -185,3 +194,28 @@
 
 
   :rcf)
+
+(defn click-on-enter-press
+  "When passed an element ID, it will return a function that
+   clicks on that element when the enter key is pressed."
+  [element-id]
+  (fn [e] (when (= "Enter" (.-key e))
+            (.click (js/document.getElementById element-id)))))
+
+(defn add-class
+  "Add a class to an element, given its ID."
+  [element-id class]
+  (-> (js/document.getElementById element-id)
+      (.classList.add class)))
+
+(defn remove-class
+  "Removes a class from an element, given its ID."
+  [element-id class]
+  (-> (js/document.getElementById element-id)
+      (.classList.remove class)))
+
+(defn toggle-class
+  "Toggles a class of an element, given its ID."
+  [element-id class]
+  (-> (js/document.getElementById element-id)
+      (.classList.toggle class)))

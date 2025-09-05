@@ -1,0 +1,140 @@
+.hide-scrollbar {
+  overflow: auto; /* Ensure scrolling is enabled */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+  scrollbar-width: none; /* Firefox */
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Edge */
+}
+
+/*
+Josh's Custom CSS Reset
+https://www.joshwcomeau.com/css/custom-css-reset/
+ */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+}
+
+body {
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+img, picture, video, canvas, svg {
+  display: block;
+  max-width: 100%;
+}
+
+input, button, textarea, select {
+  font: inherit;
+}
+
+p, h1, h2, h3, h4, h5, h6 {
+  overflow-wrap: break-word;
+}
+
+p {
+  text-wrap: pretty;
+}
+h1, h2, h3, h4, h5, h6 {
+  text-wrap: balance;
+}
+
+#root, #__next {
+  isolation: isolate;
+}
+
+/* custom styles start here */
+
+.no-select {
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */
+}
+
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    width: 100%;
+    background-color: aliceblue;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 1rem;
+}
+
+#bottomDrawer {
+    width: 100%;
+    /* margin-inline: 8px; */
+    padding: 3rem 1.5rem;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    z-index: 1;
+    background-color: #fff;
+    border: 1px solid #000;
+    transition: transform 0.25s ease-in-out;
+    transform-origin: top left;
+    transform: translateY(100%);
+}
+#bottomDrawer.open {
+    transform: translateY(0);
+}
+
+#logMakerWrapper {
+}
+#logMakerWrapper.open {
+}
+
+#logViewer {
+  animation: fade-in-up 0.5s ease-out;
+}
+
+#logViewer.leaving {
+  animation: fallAway 0.5s ease-in forwards;
+  /* animation: slide-out-right 0.25s ease-in-out; */
+}
+
+@keyframes fallAway {
+  0% {
+    transform: translateX(0) translateY(0) rotate(0deg);
+    opacity: 1;
+    filter: blur(0);
+  }
+  50% {
+    transform: translateX(30px) translateY(30px) rotate(5deg);
+    opacity: 0.5;
+  }
+  100% {
+    transform: translateX(100px) translateY(100px) rotate(12deg);
+    opacity: 0;
+    filter: blur(2px);
+  }
+}
+
+@keyframes fade-in-up {
+  from {
+    transform: translateY(10%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+@keyframes slide-out-right {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}

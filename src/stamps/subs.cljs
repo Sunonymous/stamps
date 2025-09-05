@@ -38,6 +38,11 @@
    ))
 
 (re-frame/reg-sub
+ ::ids-pending-deletion
+ (fn [db] ; note that these are formatted as [log-id ms-at-deletion]
+   (map first (:pending-deletion db))))
+
+(re-frame/reg-sub
  ::log-stamps
  (fn [db [_ id]]
    (get-in db [:logs/by-id id :timestamps])))
@@ -95,3 +100,8 @@
  ::sort-parameter
  (fn [db]
    (:sort-parameter db)))
+
+(re-frame/reg-sub
+ ::advanced-view
+ (fn [db]
+   (:advanced-view db)))

@@ -53,6 +53,11 @@
   )
 
 (re-frame/reg-event-db
+ ::untarget-log
+ (fn-traced [db _]
+            (assoc db :target-log nil)))
+
+(re-frame/reg-event-db
  ::target-log
  (fn-traced [db [_ id]]
            (assoc db :target-log id)))
@@ -74,6 +79,26 @@
  [->localStorage]
  (fn-traced [db [_ id]]
    (update-in db [:ledgers :recently-deleted] conj id)))
+
+(re-frame/reg-event-db
+ ::unschedule-for-deletion
+ [->localStorage]
+ (fn-traced [db [_ id]]
+   (update-in db [:ledgers :recently-deleted] filter (partial not= id))))
+
+;; this event should only run AFTER persisted data is loaded, just in case the
+;; user configures their deletion threshold
+#_(re-frame/reg-event-db
+ ::delete-scheduled-ids
+ (fn-traced [db _]
+            (let [time-threshold (get-in db [:config :delete-after])
+                  deletion-point (- (js/Date.now) time-threshold)]
+              (doseq [[id deleted-at] (db :pending-deletion)]
+   ; if they are older than deletion point, delete them
+                (when (< deleted-at deletion-point)
+                  (re-frame/dispatch [::delete-log id])
+                  (re-frame/dispatch [::unschedule-for-deletion id])))
+              db)))
 
 (re-frame/reg-event-db
  ::rename-log
@@ -100,3 +125,8 @@
  ::set-sort-parameter
  (fn-traced [db [_ next-sort-param]]
             (assoc db :sort-parameter next-sort-param)))
+
+(re-frame/reg-event-db
+ ::toggle-advanced-view
+ (fn-traced [db _]
+            (update db :advanced-view not)))

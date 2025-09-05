@@ -102,12 +102,11 @@
                      :align-items :flex-start
                      :gap "0.5rem"
                     }}
-       [:h3 "New Log"]
+       [:h3.no-select "New Log"]
        [:label {:style {:font-style :italic :font-family :sans}} "Name "]
        [:input
         {:type :text
-         :on-key-down (fn [e] (when (= "Enter" (.-key e))
-                                (.click (js/document.getElementById "create-log-button"))))
+         :on-key-down (util/click-on-enter-press "create-log-button")
          :value @new-name*
          :on-change #(reset! new-name* (subs (-> % .-target .-value) 0 (constants :max-log-name-length)))
          :style {:width :20ch :padding "0.15em 0.25em"}}]
@@ -197,7 +196,11 @@
             ^{:key (:id log)}
             [:div
              [:button
-              {:on-click #(re-frame/dispatch [::events/target-log (:id log)])
+              {:on-click (fn [_]
+                           (re-frame/dispatch [::events/untarget-log])
+                           (js/setTimeout #(re-frame/dispatch [::events/target-log (:id log)])
+                                          0)
+                           )
                :disabled (= (:id log) @(rf/subscribe [::subs/target-log]))}
               (:name log)]])))])))
 
@@ -279,9 +282,8 @@
                                     (< last-stamped (util/ms-in-days 1)))
            ]
         [:div#log-viewer
-         {:style {:max-width :40vw
-                  :margin "1rem 0.75rem"
-                  :border "1px solid black"
+         {:style {:border "2px solid black"
+         :border-radius :16px
                   :padding "0.5rem 1rem"
                   :display :flex
                   :flex-direction :column
@@ -335,6 +337,85 @@
                 :gap "0.5rem"}}
        [:h3 "No Log Selected"]])))
 
+(defn log-viewer-2
+  [log-id]
+  (let [log @(rf/subscribe [::subs/log log-id])]
+    (if log
+      (let [stamp-count (count (:timestamps log))
+            last-stamped (when (pos? (count (:timestamps log)))
+                           (- (js/Date.now) (first (:timestamps log))))
+            was-stamped-today? (and last-stamped
+                                    (< last-stamped (util/ms-in-days 1)))
+           ]
+        [:div#logViewer
+         {:style {:border "2px solid black"
+                  :border-radius :16px
+                  :position :relative
+                  :padding "0.5rem 1rem"
+                  :display :flex
+                  :flex-direction :column
+                  :align-items :flex-start
+                  :gap "0.5rem"
+                 }}
+         [:span {:style {:position :absolute :top :1rem :right :1rem
+                         :cursor :pointer :user-select :none
+                         :font-size :2rem :color :red}
+                 :on-click (fn [e]
+                             (util/add-class "logViewer" "leaving")
+                             (js/setTimeout #(do
+                                               (re-frame/dispatch [::events/untarget-log])
+                                               (util/remove-class "logViewer" "leaving"))
+                                            750))}
+          "→"] ; close button
+         [:h3 (:name log)]
+         [:button
+          {:on-click (fn [_] (let [next-label (js/prompt "New name?" (:name log))]
+                               (when (and next-label
+                                          (seq (.trim next-label)))
+                                 (re-frame/dispatch [::events/rename-log (:id log) next-label]))))}
+          "✏️  Rename"]
+         (cond
+           (empty? (:timestamps log))
+           [:p "No stamps yet."]
+           :otherwise
+           [:div
+            [:h4 "Last Stamped"]
+            [:p (if (< (util/ms-in-seconds 30) last-stamped)
+                  (util/ms->timelength-string last-stamped)
+                  "A moment ago.")]])
+
+         [log-goal-display log]
+         [log-deadline-display log]
+
+         [:button
+          {:on-click #(re-frame/dispatch [::events/stamp-log log-id])}
+          "STAMP"]
+         [:br]
+         [:p (str "(" stamp-count ") stamps")]
+         [:p
+          {:style {:display :flex :flex-direction :row :gap "0.25rem" :flex-wrap :wrap}}
+          (doall
+           (for [stamp @(rf/subscribe [::subs/log-stamps log-id])]
+             ^{:key stamp}
+             [:button
+              {:style {:font-size :2rem}
+               :on-click #(re-frame/dispatch [::events/remove-timestamp-from-log log-id stamp])}
+              "⍟"]))]
+         [:button
+          {:on-click #(re-frame/dispatch [::events/delete-log log-id])}
+          "Delete Me"]])
+      ;; no log
+      nil #_[:div#log-viewer
+       {:style {:margin "1rem 0.75rem"
+                :border "2px solid black"
+                :border-radius :16px
+                :padding "0.5rem 1rem"
+                :display :flex
+                :flex-direction :column
+                :align-items :flex-start
+                :gap "0.5rem"}}
+       [:h3 "No Log Selected"]])))
+
 (defn ledger-selector
   []
   (let []
@@ -368,7 +449,44 @@
           :checked @(re-frame/subscribe [::subs/reverse-sort])
           :on-change #(re-frame/dispatch [::events/toggle-reverse-sort])}]]])))
 
-(defn main []
+(defn advanced-view-toggle
+  []
+  (let [advanced-view? @(rf/subscribe [::subs/advanced-view])]
+    [:span {:style {:font-size :2rem :cursor :pointer}
+            :on-click #(re-frame/dispatch [::events/toggle-advanced-view])}
+     (if advanced-view? "🙊" "🙈")]))
+
+(defn ledger-selector-2
+  []
+  (let [advanced-view? @(rf/subscribe [::subs/advanced-view])]
+    [:div
+     {:style {}}
+     [advanced-view-toggle]
+     [:select
+      {:on-change #(re-frame/dispatch [::events/set-active-ledger (-> % .-target .-value)])
+       :disabled (not advanced-view?)
+       :value @(rf/subscribe [::subs/active-ledger])}
+      [:option {:value :all} "All"]
+      [:option {:value :needs-attention} "Needs Attention"]
+      ;; [:option {:value :archived} "Archived"]
+      ;; [:option {:value :testing} "Testing"]
+      ]
+     (when advanced-view?
+       [:select
+        {:value @(rf/subscribe [::subs/sort-parameter])
+         :on-change (fn [e] (re-frame/dispatch [::events/set-sort-parameter (-> e .-target .-value)]))}
+        [:option {:value "id"} "Age"]
+        [:option {:value "name"} "Name"]
+        [:option {:value "stamp-count"} "Number of Stamps"]
+        [:option {:value "most-recent"} "Most Recently Stamped"]])
+     (when advanced-view?
+       [:label "Reverse? "
+        [:input
+         {:type :checkbox
+          :checked @(re-frame/subscribe [::subs/reverse-sort])
+          :on-change #(re-frame/dispatch [::events/toggle-reverse-sort])}]])]))
+
+(defn main-2 []
   (let [_ 42]
     [:div
      {:style {:margin-inline :auto
@@ -395,3 +513,97 @@
                      (js/localStorage.removeItem localStorage-key)
                      (js/window.location.reload)))}
       "Delete All Data"]]))
+
+(defn due-options [*selected*]
+  [:fieldset
+   {:style {:display :flex :justify-content :space-between :gap "0.5rem"
+            :flex-wrap :wrap :border-radius :8px}}
+   [:legend "Log Type"]
+
+   [:label
+    [:input {:type "radio"
+             :name "due"
+             :value "once"
+             :checked (= @*selected* "once")
+             :on-change #(reset! *selected* "once")}]
+    " Due Once"]
+   [:label
+    [:input {:type "radio"
+             :name "due"
+             :value "recurs"
+             :checked (= @*selected* "recurs")
+             :on-change #(reset! *selected* "recurs")}]
+    " Due Repeatedly"]
+   [:label
+    [:input {:type "radio"
+             :name "due"
+             :value "goal"
+             :checked (= @*selected* "goal")
+             :on-change #(reset! *selected* "goal")}]
+    " Set a Goal"]])
+
+(defn log-maker-2
+  "This one lives inside a drawer!"
+  [is-open?]
+  (let [new-name* (r/atom "")
+        log-type  (r/atom "once")]
+    (fn [is-open?]
+      [:div#logMakerWrapper
+       {:class (when is-open? "open")}
+       [:h3.no-select "New Log"]
+       [:form
+        [:label "Name: "
+         [:input
+          {:type :text
+           :on-key-down (fn [e] (when (= "Enter" (.-key e))
+                                  (.click (js/document.getElementById "create-log-button"))))
+           :value @new-name*
+           :on-change #(reset! new-name* (subs (-> % .-target .-value) 0 (constants :max-log-name-length)))
+           :style {:width :20ch :padding "0.15em 0.25em"}}]]
+        [due-options log-type]
+        (case @log-type
+          "once"
+          [:div "once"]
+          "recurs"
+          [:div "recurs"] ;; TODO weekly recurrence is pretty limited! could be monthly or annually or semi-annually!
+          "goal"
+          [:div "goal"])
+       ]])))
+
+(defn log-cycler
+  "This component allows the user to cycle through logs one by one."
+  []
+  (let [log-ids @(rf/subscribe [(active-ledger->rf-sub @(rf/subscribe [::subs/active-ledger]))])
+        focused-id (first log-ids)]
+    (if focused-id
+      [:div#logCyclerWrapper
+       [log-viewer focused-id]]
+      [:p "All done!"])))
+
+(defn main []
+  (let [drawer-open? (r/atom false)]
+    (fn []
+      [:div
+       {:style {:width  :100dvw
+                :height :100dvh
+                :display :flex
+                ;; :flex-direction :column
+                :justify-content :center
+                :align-items  :center}}
+       [:header
+        [:h1
+         {:style {:font-family "sans-serif" :font-size :1.5rem}}
+         "Stamps"]
+        [ledger-selector-2]
+        [:button
+         {:on-click #(swap! drawer-open? not)}
+         "+ New Log"]]
+       (when @(rf/subscribe [::subs/advanced-view])
+         [ledger-viewer])
+       (if @(rf/subscribe [::subs/advanced-view])
+         [log-viewer-2 @(rf/subscribe [::subs/target-log])]
+         [log-cycler])
+       [:div#bottomDrawer
+        {:class (when @drawer-open? "open")}
+        ;; [log-maker-2 @drawer-open?] ;; TODO finish the function and use it here
+        [log-maker]]])))
