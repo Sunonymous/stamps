@@ -11,6 +11,12 @@
    [re-frame.core :as re-frame]
    [stamps.util :as util]))
 
+;; longer-form todos
+;; animations
+;; we already did a simple animation for pass
+;; absolutely needs a stamp animation
+;; could use a hold animation
+
 ;; TODO when creating a new log, only allow either due dates or goals, not both
 (defn due-date-picker
   [*date*]
@@ -367,7 +373,10 @@
                                                (re-frame/dispatch [::events/view-log log-id])
                                                (util/remove-class "logViewer" "leaving"))
                                             750))}
-          "→"] ; close button
+          "Later →"] ; later button
+         [:button
+          {}
+          "← Hold"]
          [:h3 (:name log)]
          [:button
           {:on-click (fn [_] (let [next-label (js/prompt "New name?" (:name log))]
