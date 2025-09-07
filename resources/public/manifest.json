@@ -1,7 +1,8 @@
 {
   "name": "Stamps",
   "short_name": "Stamps",
-  "start_url": ".",
+  "start_url": "/stamps/",
+  "scope": "/stamps/",
   "display": "standalone",
   "background_color": "#F00",
   "theme_color": "#FFF",

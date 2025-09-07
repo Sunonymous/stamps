@@ -21,6 +21,7 @@
 (defn init []
   (re-frame/dispatch-sync [::events/initialize-db])
   (dev-setup)
-  (when (.-serviceWorker js/navigator) ; register service worker
-    (.register (.-serviceWorker js/navigator) "/sw.js"))
+  (when (and (not config/debug?)
+             (.-serviceWorker js/navigator)) ; register service worker
+    (.register (.-serviceWorker js/navigator) "/stamps/sw.js"))
   (mount-root))

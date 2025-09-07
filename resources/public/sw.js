@@ -1,12 +1,12 @@
 const CACHE_NAME = "stamps-offline-v1";
 const ASSETS = [
-  "/",
-  "/index.html",
-  "/js/compiled/app.js",
-  "/styles.css",
-  "/manifest.json",
-  "/icons/android-chrome-192x192.png",
-  "/icons/android-chrome-512x512.png"
+  "/stamps/",
+  "/stamps/index.html",
+  "/stamps/js/compiled/app.js",
+  "/stamps/styles.css",
+  "/stamps/manifest.json",
+  "/stamps/icons/android-chrome-192x192.png",
+  "/stamps/icons/android-chrome-512x512.png"
 ];
 
 self.addEventListener("install", event => {
