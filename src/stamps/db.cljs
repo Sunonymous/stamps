@@ -6,16 +6,20 @@
 
 (def default-db
   {:logs/by-id     {}
+   :held-ids      #{} ;; ids user is holding temporarily
+   :last-visit     (js/Date.now) ;; timestamp of last user session
    :history       #{} ;; history of logs interacted with. resets daily
    :config         {:archive-threshold (util/ms-in-days 15) ;; logs without a timestamp in this amount of time are considered archived
                     :goals-first?      false ;; goals shown before deadlines in needs-attention
                     :delete-after      (util/ms-in-days 7) ;; if logs are in the deleted ledger, they will be removed after 7 days
-                    }
+                   } ;; TODO grab config functions from old program
    :active-ledger :needs-attention ;; all/needs-attention ;; TODO add more ledgers!
    :sort-parameter "id" ; started using strings for this because they are used as map keys
    :reverse-sort   false
    :pending-deletion [] ; logs that a user chooses to delete go here for a period of time before being officially deleted
    :advanced-view  false ; sometimes a user just wants to meddle
+   :install-ready? false ; converts to true when event is captured
+   :install-event  nil   ; event captured from browser
    #_:ledgers    #_{:needs-attention    [] ;; has goal/deadline
                     :overdue            [] ;; has deadline
                     :uninterested       [] ;; user has continually passes

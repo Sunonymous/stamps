@@ -21,6 +21,10 @@
 (defn init []
   (re-frame/dispatch-sync [::events/initialize-db])
   (dev-setup)
+ ; prep for install!
+  (.addEventListener js/window "beforeinstallprompt"
+                     (fn [e] (.preventDefault e)
+                             (re-frame/dispatch [::events/set-install-event e])))
   (when (and (not config/debug?)
              (.-serviceWorker js/navigator)) ; register service worker
     (.register (.-serviceWorker js/navigator) "/stamps/sw.js"))

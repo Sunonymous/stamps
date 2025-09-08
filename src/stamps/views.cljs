@@ -590,6 +590,16 @@
        [log-viewer-2 focused-id]]
       [:p "All done!"])))
 
+(defn install-button
+  "Button to install app as PWA."
+  []
+  (let [install-ready? @(rf/subscribe [::subs/install-ready?])]
+    (when install-ready?
+     [:button
+      {:style {:position :fixed :bottom :1rem :right :1rem}
+       :on-click #(re-frame/dispatch [::events/trigger-install])}
+      "Install STAMPS"])))
+
 (defn main []
   (let [drawer-open? (r/atom false)]
     (fn []
@@ -622,6 +632,7 @@
        (if @(rf/subscribe [::subs/advanced-view])
          [log-viewer-2 @(rf/subscribe [::subs/target-log])]
          [log-cycler])
+       [install-button]
        [:div#bottomDrawer
         {:class (when @drawer-open? "open")}
         ;; [log-maker-2 @drawer-open?] ;; TODO finish the function and use it here

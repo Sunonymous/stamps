@@ -140,3 +140,20 @@
  ::clear-history
  (fn-traced [db _]
             (assoc db :history #{})))
+
+(re-frame/reg-event-db
+ ::set-install-event
+ (fn-traced [db [_ event]]
+            (assoc db :install-event event
+                      :install-ready? true)))
+
+(re-frame/reg-event-fx
+ ::trigger-install
+ (fn-traced [{:keys [db]} _]
+            (when-let [e (:install-event db)]
+              (.prompt e)
+              (-> (.userChoice e)
+                  (.then (fn [choice]
+                           (js/console.log "User response to install prompt: " (.-outcome choice))))))
+            {:db (assoc db :install-event  nil
+                           :install-ready? false)}))

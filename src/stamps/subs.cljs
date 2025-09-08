@@ -108,3 +108,13 @@
  ::history
  (fn [db]
    (:history db)))
+
+(re-frame/reg-sub
+ ::install-ready?
+ (fn [db]
+   (:install-ready? db)))
+
+(re-frame/reg-sub
+ ::install-event
+ (fn [db]
+   (:install-event db)))
