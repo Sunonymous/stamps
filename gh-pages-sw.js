@@ -4,7 +4,7 @@ const ASSETS = [
   "/stamps/index.html",
   "/stamps/js/compiled/app.js",
   "/stamps/styles.css",
-  "/stamps/manifest.json",
+  "/stamps/manifest.webmanifest",
   "/stamps/icons/android-chrome-192x192.png",
   "/stamps/icons/android-chrome-512x512.png"
 ];
