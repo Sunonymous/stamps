@@ -30,13 +30,13 @@ jobs:
       - name: Copy static site files
         run: |
           mkdir -p release
-          cp resources/public/index.html       release/
-          cp resources/public/favicon.ico      release/
-          cp -r resources/public/styles.css    release/
-          cp -r resources/public/manifest.json release/
-          cp -r resources/public/sw.js         release/
-          cp -r resources/public/gh-pages-sw.js         release/
-          cp -r resources/public/icons         release/icons
+          cp resources/public/index.html        release/
+          cp resources/public/favicon.ico       release/
+          cp -r resources/public/styles.css     release/
+          cp -r resources/public/sw.js          release/
+          cp -r resources/public/gh-pages-sw.js release/
+          cp -r resources/public/icons          release/icons
+          cp -r resources/public/manifest.webmanifest release/
           mkdir -p release/js/compiled/
           cp resources/public/js/compiled/app.js      release/js/compiled/
 
