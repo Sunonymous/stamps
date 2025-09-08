@@ -5,6 +5,8 @@ const ASSETS = [
   "/stamps/js/compiled/app.js",
   "/stamps/styles.css",
   "/stamps/manifest.webmanifest",
+  "/stamps/favicon.ico",
+  "/stamps/icons/apple-touch-icon.png",
   "/stamps/icons/android-chrome-192x192.png",
   "/stamps/icons/android-chrome-512x512.png"
 ];
