@@ -3,9 +3,10 @@
   "short_name": "Stamps",
   "start_url": "/stamps/",
   "scope": "/stamps/",
+  "id": "/stamps/",
   "display": "standalone",
   "background_color": "#F00F00",
-  "theme_color": "#FFFFFF",
+  "theme_color": "#0d9488",
   "icons": [
     {
       "src": "/stamps/icons/android-chrome-192x192.png",
