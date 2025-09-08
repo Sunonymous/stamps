@@ -31,6 +31,7 @@ jobs:
         run: |
           mkdir -p release
           cp resources/public/index.html       release/
+          cp resources/public/favicon.ico      release/
           cp -r resources/public/styles.css    release/
           cp -r resources/public/manifest.json release/
           cp -r resources/public/sw.js         release/
